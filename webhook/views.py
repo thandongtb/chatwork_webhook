@@ -1,7 +1,8 @@
 from django.shortcuts import render
 import hashlib
 import hmac
-import http.client as client
+from chatbot.chatbot_helpers import get_chatbot_response
+from chatbot.chatwork_helpers import Chatwork
 import json
 import base64
 
@@ -25,11 +26,23 @@ def decode_payload(request):
     payload = str(request.body, encoding='utf-8')
     return json.loads(payload)
 
+def handle_payload(payload):
+    if payload['webhook_event_type'] == 'mention_to_me':
+        message_body = payload['webhook_event']['body']
+        message_chatbot = get_chatbot_response(message_body)
+        message_reply_chatwork = Chatwork().get_reply_message(
+            account_id=int(payload['webhook_event']['from_account_id']),
+            room_id=int(payload['webhook_event']['room_id']),
+            message_id=int(payload['webhook_event']['message_id']),
+            message=message_chatbot
+        )
+        Chatwork().send_message(room_id=payload['webhook_event']['room_id'], msg=message_reply_chatwork)
+
+
 @csrf_exempt
 def handle_chatwork_webhook(request):
     if validate_request(request) == 0:
         return HttpResponseForbidden('Invalid signature header')
     payload = decode_payload(request)
-    event = payload['webhook_event_type']
-    print(event)
+    handle_payload(payload)
     return HttpResponse('Webhook received', status=200)

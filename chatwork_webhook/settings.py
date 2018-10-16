@@ -13,15 +13,24 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 import base64
 import dotenv
-dotenv.load('../.env')
+
+try:
+    dotenv.load('../.env')
+except:
+    pass
+
+def convert_value(value):
+    value_dict = {'True' : True, 'False' : False}
+    if value in value_dict.keys():
+        return value_dict[value]
+    return value
 
 def env(key, default=None):
-    value = dotenv.get(key, default)
-    if value == 'True':
-        value = True
-    elif value == 'False':
-        value = False
-    return value
+    if key in os.environ:
+        value = os.environ.get(key)
+    else:
+        value = dotenv.get(key, default)
+    return convert_value(value)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
