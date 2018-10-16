@@ -1,9 +1,10 @@
 from chatterbot import ChatBot
+from chatwork_webhook.settings import CHATBOT_DATABASE
 
 def get_chatbot_response(message):
     chatbot = ChatBot(
         "Chatwork Bot",
-        database='/home/vibloteam/Project/chatwork_api/db.sqlite3',
+        database=CHATBOT_DATABASE,
         logic_adapters=[
             {
                 'import_path': 'chatterbot.logic.BestMatch'

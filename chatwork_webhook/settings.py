@@ -74,7 +74,7 @@ MIDDLEWARE_CLASSES = [
 
 CHATWORK_API_TOKEN = env('CHATWORK_API_TOKEN')
 CHATWORK_WEBHOOK_SECRET = base64.b64decode(env('CHATWORK_WEBHOOK_SECRET'))
-
+CHATBOT_DATABASE = os.path.join(BASE_DIR, 'chatbot/chatbotdb.sqlite3')
 ROOT_URLCONF = 'chatwork_webhook.urls'
 
 TEMPLATES = [
