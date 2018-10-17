@@ -28,7 +28,7 @@ def decode_payload(request):
 
 def handle_payload(payload):
     if payload['webhook_event_type'] == 'mention_to_me':
-        message_body = payload['webhook_event']['body']
+        message_body = payload['webhook_event']['body'].split('\n')[-1]
         message_chatbot = get_chatbot_response(message_body)
         message_chatbot = handle_response_code(str(message_chatbot))
         message_reply_chatwork = Chatwork().get_reply_message(

@@ -13,7 +13,7 @@ chatbot = ChatBot(
         },
         {
             'import_path': 'chatterbot.logic.LowConfidenceAdapter',
-            'threshold': 0.6,
+            'threshold': 0.5,
             'default_response': "default_response"
         },
     ],
