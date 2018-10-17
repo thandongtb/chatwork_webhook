@@ -1,10 +1,12 @@
 from chatterbot import ChatBot
 from chatwork_webhook.settings import CHATBOT_DATABASE
 import random
+from chatbot.doodle_helpers import get_weekday_calendar
 
 chatbot = ChatBot(
     "Chatwork Bot",
     database=CHATBOT_DATABASE,
+    read_only = True,
     logic_adapters=[
         {
             'import_path': 'chatterbot.logic.BestMatch'
@@ -27,3 +29,9 @@ def get_chatbot_response(message):
                 "(leuleu2) em chịu thôi",
             ])
     return response
+
+def handle_response_code(message):
+    if '_work_schedule' in message:
+        weekday_name = message.split('_work_schedule')[0]
+        message = get_weekday_calendar(weekday_name)
+    return message
