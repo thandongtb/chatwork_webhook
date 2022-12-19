@@ -9,12 +9,11 @@ chatbot = ChatBot(
     read_only = True,
     logic_adapters=[
         {
-            'import_path': 'chatterbot.logic.BestMatch'
-        },
-        {
-            'import_path': 'chatterbot.logic.LowConfidenceAdapter',
-            'threshold': 0.5,
+            'import_path': 'chatterbot.logic.BestMatch',
+            'maximum_similarity_threshold': 0.90
             'default_response': "default_response"
+##The LowConfidenceAdapter was removed from ChatterBot
+##https://github.com/gunthercox/ChatterBot/issues/1644#issuecomment-468087642
         },
     ],
 )
